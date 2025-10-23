@@ -1,0 +1,228 @@
+/* ===== CONFIGURAÇÃO GERAL ===== */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  color: #222;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===== CABEÇALHO ===== */
+
+/* Linha superior */
+.top-bar {
+  background: #444;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+}
+
+.top-bar nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+  font-size: 14px;
+}
+
+.logo-topo {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Segunda barra */
+.sub-bar {
+  background: #eaeaea;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 20px;
+  font-size: 14px;
+}
+
+.sub-bar ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.sub-bar li {
+  margin-right: 15px;
+}
+
+.sub-bar a {
+  color: #1a1a1a;
+}
+
+.acoes a {
+  margin-left: 15px;
+}
+
+/* Cabeçalho principal */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  height: 70px;
+  margin-right: 15px;
+}
+
+.logo p {
+  margin: 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 24px;
+  color: #222;
+}
+
+/* Área de busca */
+.search-area {
+  display: flex;
+  align-items: center;
+}
+
+.social a img {
+  width: 32px;
+  margin-left: 10px;
+}
+
+form {
+  display: flex;
+  margin-left: 15px;
+}
+
+input[type="text"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+}
+
+button {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background: #f4f4f4;
+  cursor: pointer;
+  border-radius: 0 4px 4px 0;
+}
+
+button:hover {
+  background: #ddd;
+}
+
+/* ===== CONTEÚDO RS SEGURO ===== */
+.conteudo {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.breadcrumb p {
+  font-size: 14px;
+  color: #555;
+  margin: 0;
+  padding: 5px;
+}
+
+.breadcrumb a {
+  color: #0066cc;
+}
+
+.breadcrumb span {
+  color: #999;
+  padding: 5px;
+}
+
+/* Ícones sociais */
+.icones-sociais a img {
+  width: 28px;
+  height: 28px;
+  margin-left: 8px;
+  border-radius: 4px;
+}
+
+/* Botões */
+.botoes {
+  margin-top: 15px;
+}
+
+button.btn-voltar,
+button.btn-imprimir {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 14px;
+  margin-right: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button.btn-voltar:hover,
+button.btn-imprimir:hover {
+  background: #f0f0f0;
+}
+
+/* Título */
+h1 {
+  font-size: 36px;
+  font-weight: 400;
+  margin: 25px 0;
+}
+
+/* Imagem */
+.imagem {
+  background: #f4f4f4;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.imagem img {
+  width: 100%;
+  max-width: 800px;
+  display: block;
+  margin: 0 auto;
+}
+
+.legenda {
+  background: #eaeaea;
+  padding: 10px;
+  font-size: 14px;
+  color: #333;
+  margin: 0;
+}
