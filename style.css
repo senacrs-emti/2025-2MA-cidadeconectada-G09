@@ -1,4 +1,4 @@
-/* ===== CONFIGURAÇÃO GERAL ===== */
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -11,7 +11,7 @@ a {
   color: inherit;
 }
 
-/* ===== CABEÇALHO ===== */
+
 .top-bar {
   background: #444;
   color: #fff;
@@ -126,7 +126,7 @@ button:hover {
   background: #ddd;
 }
 
-/* ===== MENU INSTITUCIONAL ===== */
+
 .menu-institucional {
   background: #fff;
   border-top: 1px solid #ddd;
@@ -157,7 +157,6 @@ button:hover {
   vertical-align: middle;
 }
 
-/* ===== CONTEÚDO ===== */
 .conteudo {
   max-width: 900px;
   margin: 40px auto;
@@ -167,7 +166,7 @@ button:hover {
   box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
-/* Breadcrumb */
+
 .breadcrumb {
   display: flex;
   justify-content: space-between;
@@ -197,7 +196,7 @@ button:hover {
   border-radius: 4px;
 }
 
-/* Botões */
+
 .botoes {
   margin-top: 15px;
 }
@@ -218,14 +217,14 @@ button.btn-imprimir:hover {
   background: #f0f0f0;
 }
 
-/* Título */
+
 h1 {
   font-size: 36px;
   font-weight: 400;
   margin: 25px 0;
 }
 
-/* Imagem */
+
 .imagem {
   background: #f4f4f4;
   border: 1px solid #ddd;
