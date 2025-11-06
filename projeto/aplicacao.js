@@ -1,56 +1,78 @@
 window.addEventListener("load", () => {
   const map = L.map("map").setView([-30.0346, -51.2177], 12);
 
-  
+  // Camada de fundo (dark theme)
   L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
     attribution:
       '&copy; <a href="https://carto.com/">CARTO</a> | &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
   }).addTo(map);
 
-  
+  // Lista de bairros de interesse (exemplo)
   const bairrosPerigosos = [
     "Centro Histórico",
     "Restinga",
     "Rubem Berta",
     "Lomba do Pinheiro",
     "Partenon",
+    "Farroupilha",
   ];
 
-  
   fetch("bairros.geojson")
     .then(res => res.json())
     .then(data => {
       const bairrosLayer = L.geoJSON(data, {
         style: (feature) => {
           const nome = feature.properties.bairro;
-          // Se estiver na lista, pinta de vermelho
-          if (bairrosPerigosos.includes(nome)) {
-            return {
-              color: "#ff4d4d",
-              weight: 2.5,
-              fillColor: "#ff0000",
-              fillOpacity: 0.15,
-            };
-          }
-          // Caso contrário, cor padrão
+
+          // níveis de perigo (exemplo: 0 = seguro, 1 = muito perigoso)
+          const niveisPerigo = {
+            "Centro Histórico": 0.8,
+            "Restinga": 0.9,
+            "Rubem Berta": 0.7,
+            "Lomba do Pinheiro": 0.6,
+            "Partenon": 0.5,
+            "Farroupilha": 0.3,
+            "Sarandi": 0.65,
+            "Bom Jesus": 0.75,
+            "Vila Nova": 0.4,
+            "Cavalhada": 0.35,
+            "Jardim Botânico": 0.25,
+            "Tristeza": 0.2,
+            "Cristal": 0.45,
+            "Menino Deus": 0.15,
+            "Mário Quintana": 0.85,
+            "Santa Tereza": 0.5
+          };
+
+          // usa 0.1 se o bairro não estiver na lista
+          const perigo = niveisPerigo[nome] || 0.1;
+
+          // gera uma cor do verde ao vermelho conforme o nível
+          const r = Math.floor(255 * perigo);
+          const g = Math.floor(255 * (1 - perigo));
+          const cor = `rgb(${r}, ${g}, 0)`;
+
           return {
-            color: "#555",
-            weight: 1.2,
-            fillColor: "#999",
-            fillOpacity: 0.05,
+            color: cor,
+            weight: 2,
+            fillColor: cor,
+            fillOpacity: 0.25 + 0.3 * perigo,
           };
         },
+
         onEachFeature: (feature, layer) => {
           if (feature.properties && feature.properties.bairro) {
-            layer.bindPopup(`<b>${feature.properties.bairro}</b>`);
+            const nome = feature.properties.bairro;
+            const perigo = feature.properties.bairro in bairrosPerigosos ? "Perigoso" : "Seguro";
+            layer.bindPopup(`<b>${nome}</b><br>Nível de perigo: ${perigo}`);
           }
         },
       }).addTo(map);
 
-      // Ajusta a visão para caber todos os bairros
+      // Ajusta visão para mostrar todos os bairros
       map.fitBounds(bairrosLayer.getBounds());
 
-      // Lista os bairros na sidebar
+      // Lista lateral de bairros
       const list = document.getElementById("dangerousList");
       data.features.forEach(feature => {
         const li = document.createElement("li");
@@ -60,7 +82,7 @@ window.addEventListener("load", () => {
           map.fitBounds(L.geoJSON(feature).getBounds());
         });
 
-        // Destaca o texto se o bairro for perigoso
+        // Destaca o texto conforme o nível
         if (bairrosPerigosos.includes(feature.properties.bairro)) {
           li.style.color = "#ff4d4d";
           li.style.fontWeight = "bold";
@@ -69,7 +91,7 @@ window.addEventListener("load", () => {
         list.appendChild(li);
       });
 
-      // Filtro de busca
+      // Campo de busca
       document.getElementById("searchInput").addEventListener("input", (e) => {
         const termo = e.target.value.toLowerCase();
         document.querySelectorAll("#dangerousList li").forEach((li, index) => {
