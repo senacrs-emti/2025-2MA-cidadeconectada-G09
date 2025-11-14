@@ -41,7 +41,7 @@ window.addEventListener("load", () => {
             "Cristal": 0.45,
             "Menino Deus": 0.15,
             "Mário Quintana": 0.85,
-            "Santa Tereza": 0.5
+            "Santa Tereza": 0.51,
           };
 
           // usa 0.1 se o bairro não estiver na lista
