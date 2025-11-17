@@ -80,3 +80,4 @@ window.addEventListener("load", () => {
     })
     .catch(err => console.error("Erro ao carregar GeoJSON:", err));
 });
+//aura
