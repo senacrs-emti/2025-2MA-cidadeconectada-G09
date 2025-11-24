@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mapa Interativo — Porto Alegre</title>
+
   <link rel="stylesheet" href="aplicacao.css" />
 
   <link
@@ -21,9 +22,26 @@
       <h1>Mapa Interativo — Porto Alegre</h1>
       <p>Pesquise e visualize os bairros da cidade.</p>
 
+      <!-- BUSCA -->
       <input type="text" id="searchInput" placeholder="Buscar bairro..." />
 
-      <h2>Bairros mais perigosos</h2>
+      <!-- SELETOR DE CRIMES -->
+      <h2>Tipo de Crime</h2>
+      <select id="crimeSelect">
+        <option value="">Selecione...</option>
+        <option value="FURTO DE CELULAR">Furto de Celular</option>
+        <option value="ROUBO DE VEÍCULO">Roubo de Veículo</option>
+        <option value="ROUBO A PEDESTRE">Roubo a Pedestre</option>
+        <option value="HOMICÍDIO">Homicídios</option>
+        <option value="SEQUESTRO E CARCERE PRIVADO">Sequestro e Cárcere</option>
+        <option value="FURTO QUALIFICADO">Furto Qualificado</option>
+        <option value="ROUBO A COMÉRCIO">Roubo a Comércio</option>
+        <option value="ROUBO A RESIDÊNCIA">Roubo a Residência</option>
+        <option value="ESTUPRO">Estupro</option>
+        <option value="FURTO SIMPLES">Furto Simples</option>
+      </select>
+      
+      <h2>Bairros</h2>
       <ul id="dangerousList"></ul>
     </div>
 
