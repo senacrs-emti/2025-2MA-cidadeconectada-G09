@@ -7,16 +7,18 @@ window.addEventListener("load", () => {
   }).addTo(map);
 
   let bairrosLayer = null;
-  let dadosCrimesAtuais = null;
+  let dadosCrimesAtuais = {};
 
   // ---- NORMALIZADOR ----
   function normalizarNome(texto) {
     return texto
       .toUpperCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
       .trim();
   }
 
+  // ---- CORES DO MAPA ----
   function corPorQuantidade(qtd) {
     if (qtd === 0) return "#3b7bff";
     if (qtd < 10) return "#32cd32";
@@ -24,22 +26,24 @@ window.addEventListener("load", () => {
     return "#ff0000";
   }
 
+  // ---- APLICA AS CORES ----
   function atualizarEstilo() {
     if (!bairrosLayer) return;
 
     bairrosLayer.setStyle((feature) => {
-      const nome = normalizarNome(feature.properties.bairro);
-      const qtd = dadosCrimesAtuais?.[nome] || 0;
+      const nomeBairro = normalizarNome(feature.properties.bairro);
+      const qtd = dadosCrimesAtuais[nomeBairro] || 0;
 
       return {
         color: "#222",
         weight: 1.5,
         fillColor: corPorQuantidade(qtd),
-        fillOpacity: 0.4,
+        fillOpacity: 0.5,
       };
     });
   }
 
+  // ---- CARREGA O GEOJSON ----
   function carregarMapaInicial() {
     fetch("bairros.geojson")
       .then((res) => res.json())
@@ -74,7 +78,7 @@ window.addEventListener("load", () => {
           list.appendChild(li);
         });
 
-        // BUSCA
+        // BUSCA DE BAIRROS
         document.getElementById("searchInput").addEventListener("input", (e) => {
           const termo = e.target.value.toLowerCase();
           document.querySelectorAll("#dangerousList li").forEach((li) => {
@@ -90,23 +94,25 @@ window.addEventListener("load", () => {
 
   // ---- SELETOR DE CRIMES ----
   document.getElementById("crimeSelect").addEventListener("change", async (e) => {
-    const crime = e.target.value;
+    const crimeSelecionado = e.target.value;
 
-    if (!crime) {
-      dadosCrimesAtuais = null;
+    if (!crimeSelecionado) {
+      dadosCrimesAtuais = {};
       atualizarEstilo();
       return;
     }
 
     try {
-      const todos = await fetch("crimes.json").then(r => r.json());
+      const todosCrimes = await fetch("crimes.json").then(r => r.json());
 
-      // Normaliza chave do crime (garante SEM ACENTO)
-      const crimeNormalizado = normalizarNome(crime);
+      // Normalizar a chave — SEM acentos
+      const crimeNormalizado = normalizarNome(crimeSelecionado);
 
-      dadosCrimesAtuais = todos[crimeNormalizado] || todos[crime] || {};
+      // Tenta achar pela chave normalizada
+      dadosCrimesAtuais = todosCrimes[crimeNormalizado] || {};
 
       atualizarEstilo();
+
     } catch (err) {
       console.error("Erro ao carregar JSON:", err);
     }
