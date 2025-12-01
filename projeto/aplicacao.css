@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 body {
@@ -86,4 +86,91 @@ body {
   height: calc(100vh - 20px);
   width: 100%;
   min-height: 400px;
+}
+
+.crime-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 2px 5px;
+  border-radius: 4px;
+  text-align: center;
+  pointer-events: none;
+}
+
+#crimeSelect {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #1e90ff;
+  background: #0e1b2c;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-bottom: 15px;
+
+  background-image: linear-gradient(45deg, transparent 50%, #1e90ff 50%),
+    linear-gradient(135deg, #1e90ff 50%, transparent 50%),
+    linear-gradient(to right, #1e90ff, #1e90ff);
+  background-position: calc(100% - 20px) calc(50% - 5px),
+    calc(100% - 15px) calc(50% - 5px),
+    calc(100% - 35px) 50%;
+  background-size: 5px 5px, 5px 5px, 1px 20px;
+  background-repeat: no-repeat;
+}
+
+#crimeSelect:hover {
+  border-color: #3aa3ff;
+}
+
+#crimeSelect:focus {
+  border-color: #4cc9f0;
+  box-shadow: 0 0 8px rgba(76, 201, 240, 0.5);
+  outline: none;
+}
+
+#creditos {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.6);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: white;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+#creditos a {
+  color: #4cc9f0;
+  text-decoration: none;
+}
+
+#creditos a:hover {
+  text-decoration: underline;
+}
+
+.api-link {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+
+.api-link a {
+  color: #4cc9f0;
+  text-decoration: none;
 }

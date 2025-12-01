@@ -14,6 +14,7 @@
   <script
     src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
   ></script>
+
 </head>
 
 <body>
@@ -22,10 +23,8 @@
       <h1>Mapa Interativo — Porto Alegre</h1>
       <p>Pesquise e visualize os bairros da cidade.</p>
 
-      <!-- BUSCA -->
       <input type="text" id="searchInput" placeholder="Buscar bairro..." />
 
-      <!-- SELETOR DE CRIMES -->
       <h2>Tipo de Crime</h2>
       <select id="crimeSelect">
         <option value="">Selecione...</option>
@@ -40,12 +39,19 @@
         <option value="ESTUPRO">Estupro</option>
         <option value="FURTO SIMPLES">Furto Simples</option>
       </select>
-      
+
       <h2>Bairros</h2>
       <ul id="dangerousList"></ul>
     </div>
 
     <div id="map"></div>
+  </div>
+
+  <div class="api-link">
+    Fontes: 
+    <a href="https://www.rs.gov.br/busca?q=&orgao=145" target="_blank">
+      Governo do Estado do RS
+    </a>
   </div>
 
   <script src="aplicacao.js"></script>

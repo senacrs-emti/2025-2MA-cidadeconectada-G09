@@ -1,6 +1,10 @@
 window.addEventListener("load", () => {
   const map = L.map("map").setView([-30.0346, -51.2177], 12);
 
+  map.attributionControl.addAttribution(
+    '  <a href="https://www.rs.gov.br/busca?q=&orgao=145" target="_blank">Fontes</a>'
+  );
+
   L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
     attribution:
       '&copy; <a href="https://carto.com/">CARTO</a> | &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>',
@@ -8,8 +12,9 @@ window.addEventListener("load", () => {
 
   let bairrosLayer = null;
   let dadosCrimesAtuais = {};
+  let crimeAtualNome = "";
+  let listaOriginal = []; 
 
-  // ---- NORMALIZADOR ----
   function normalizarNome(texto) {
     return texto
       .toUpperCase()
@@ -18,103 +23,154 @@ window.addEventListener("load", () => {
       .trim();
   }
 
-  // ---- CORES DO MAPA ----
-  function corPorQuantidade(qtd) {
-    if (qtd === 0) return "#3b7bff";
-    if (qtd < 10) return "#32cd32";
-    if (qtd < 30) return "#ffff00";
-    return "#ff0000";
+  function darkenColor(hex, factor = 0.35) {
+    const c = hex.replace("#", "");
+    const r = parseInt(c.substring(0, 2), 16);
+    const g = parseInt(c.substring(2, 4), 16);
+    const b = parseInt(c.substring(4, 6), 16);
+
+    const newR = Math.max(0, Math.floor(r * (1 - factor)));
+    const newG = Math.max(0, Math.floor(g * (1 - factor)));
+    const newB = Math.max(0, Math.floor(b * (1 - factor)));
+
+    return (
+      "#" +
+      newR.toString(16).padStart(2, "0") +
+      newG.toString(16).padStart(2, "0") +
+      newB.toString(16).padStart(2, "0")
+    );
   }
 
-  // ---- APLICA AS CORES ----
-  function atualizarEstilo() {
-    if (!bairrosLayer) return;
+  function corPorQuantidade(qtd) {
+    if (qtd === 0) return "#4cc9f0";
+    if (qtd < 10) return "#76c893";
+    if (qtd < 30) return "#f9c74f";
+    return "#f94144";
+  }
 
-    bairrosLayer.setStyle((feature) => {
-      const nomeBairro = normalizarNome(feature.properties.bairro);
-      const qtd = dadosCrimesAtuais[nomeBairro] || 0;
+  function atualizarListaRankeada() {
+    const ul = document.getElementById("dangerousList");
+    ul.innerHTML = "";
 
-      return {
-        color: "#222",
-        weight: 1.5,
-        fillColor: corPorQuantidade(qtd),
-        fillOpacity: 0.5,
-      };
+    if (!crimeAtualNome) {
+      listaOriginal
+        .sort((a, b) => a.localeCompare(b))
+        .forEach((bairro) => {
+          const li = document.createElement("li");
+          li.textContent = bairro;
+          li.style.color = "#fff";
+          li.addEventListener("click", () => focarBairro(bairro));
+          ul.appendChild(li);
+        });
+      return;
+    }
+
+    const ranking = listaOriginal
+      .map((nome) => ({
+        nome,
+        qtd: dadosCrimesAtuais[normalizarNome(nome)] || 0,
+      }))
+      .sort((a, b) => b.qtd - a.qtd);
+
+    ranking.forEach((obj, index) => {
+      const li = document.createElement("li");
+      li.textContent = `${obj.nome} — ${obj.qtd}`;
+
+      if (index < 3 && obj.qtd > 0) {
+        li.style.color = "#ff4d4d";
+      } else {
+        li.style.color = "#fff";
+      }
+
+      li.addEventListener("click", () => focarBairro(obj.nome));
+      ul.appendChild(li);
     });
   }
 
-  // ---- CARREGA O GEOJSON ----
+  function focarBairro(nome) {
+    bairrosLayer.eachLayer((layer) => {
+      if (layer.feature.properties.bairro === nome) {
+        map.fitBounds(layer.getBounds());
+      }
+    });
+  }
+
+  function atualizarEstilo() {
+    bairrosLayer.eachLayer((layer) => {
+      const nome = normalizarNome(layer.feature.properties.bairro);
+      const qtd = dadosCrimesAtuais[nome] || 0;
+
+      let fill, borda;
+
+      if (!crimeAtualNome) {
+        fill = "#888";
+        borda = "#555";
+      } else {
+        fill = corPorQuantidade(qtd);
+        borda = darkenColor(fill, 0.25);
+      }
+
+      layer.setStyle({
+        color: borda,
+        weight: 1.2,
+        fillColor: fill,
+        fillOpacity: crimeAtualNome ? 0.32 : 0.15,
+      });
+
+      layer.unbindPopup();
+      layer.bindPopup(`
+        <b>${layer.feature.properties.bairro}</b><br>
+        ${crimeAtualNome || "Nenhum crime selecionado"}<br>
+        <b>${qtd} casos</b>
+      `);
+    });
+
+    atualizarListaRankeada();
+  }
+
   function carregarMapaInicial() {
     fetch("bairros.geojson")
-      .then((res) => res.json())
+      .then((r) => r.json())
       .then((data) => {
-        bairrosLayer = L.geoJSON(data, {
-          style: {
-            color: "#444",
-            weight: 1,
-            fillColor: "#999",
-            fillOpacity: 0.2,
-          },
-
-          onEachFeature: (feature, layer) => {
-            const nome = feature.properties.bairro;
-            layer.bindPopup(`<b>${nome}</b>`);
-          },
-        }).addTo(map);
-
+        bairrosLayer = L.geoJSON(data).addTo(map);
         map.fitBounds(bairrosLayer.getBounds());
 
-        // LISTA DE BAIRROS
-        const list = document.getElementById("dangerousList");
-        data.features.forEach((feature) => {
-          const nome = feature.properties.bairro;
+        const ul = document.getElementById("dangerousList");
+
+        data.features.forEach((f) => {
+          const nome = f.properties.bairro;
+          listaOriginal.push(nome);
+
           const li = document.createElement("li");
           li.textContent = nome;
 
-          li.addEventListener("click", () => {
-            map.fitBounds(L.geoJSON(feature).getBounds());
-          });
-
-          list.appendChild(li);
+          li.addEventListener("click", () => focarBairro(nome));
+          ul.appendChild(li);
         });
 
-        // BUSCA DE BAIRROS
-        document.getElementById("searchInput").addEventListener("input", (e) => {
-          const termo = e.target.value.toLowerCase();
-          document.querySelectorAll("#dangerousList li").forEach((li) => {
-            li.style.display = li.textContent.toLowerCase().includes(termo)
-              ? "block"
-              : "none";
-          });
-        });
+        atualizarEstilo();
       });
   }
 
   carregarMapaInicial();
 
-  // ---- SELETOR DE CRIMES ----
   document.getElementById("crimeSelect").addEventListener("change", async (e) => {
-    const crimeSelecionado = e.target.value;
+    const crime = e.target.value;
 
-    if (!crimeSelecionado) {
+    if (!crime) {
+      crimeAtualNome = "";
       dadosCrimesAtuais = {};
       atualizarEstilo();
       return;
     }
 
-    try {
-      const todosCrimes = await fetch("crimes.json").then(r => r.json());
+    const todosCrimes = await fetch("crimes.json").then((r) => r.json());
 
-      // Normalizar a chave — SEM acentos
-      const crimeNormalizado = normalizarNome(crimeSelecionado);
+    const crimeNorm = normalizarNome(crime);
+    crimeAtualNome = crime;
 
-      // Tenta achar pela chave normalizada
-      dadosCrimesAtuais = todosCrimes[crimeNormalizado] || {};
+    dadosCrimesAtuais = todosCrimes[crimeNorm] || {};
 
-      atualizarEstilo();
-
-    } catch (err) {
-      console.error("Erro ao carregar JSON:", err);
-    }
+    atualizarEstilo();
   });
 });
