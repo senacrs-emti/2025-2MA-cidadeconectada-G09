@@ -1,90 +1,176 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
-  }
-  
-  body {
-    background-color: #0b1623;
-    color: #fff;
-    height: 100vh;
-    overflow: hidden;
-  }
-  
-  .container {
-    display: flex;
-    height: 100vh;
-    padding: 10px;
-    gap: 10px;
-  }
-  
-  .sidebar {
-    width: 320px;
-    background: #08111f;
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  .sidebar h1 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  .sidebar p {
-    font-size: 14px;
-    color: #c5d0e0;
-    margin-bottom: 15px;
-  }
-  
-  #searchInput {
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    outline: none;
-    width: 100%;
-    background: #0e1b2c;
-    color: #fff;
-    margin-bottom: 15px;
-  }
-  
-  .sidebar h2 {
-    font-size: 16px;
-    color: #1e90ff;
-    margin-bottom: 8px;
-  }
-  
-  #dangerousList {
-    list-style: none;
-    overflow-y: auto;
-    flex: 1;
-  }
-  
-  #dangerousList li {
-    background: #0e1b2c;
-    margin-bottom: 8px;
-    padding: 10px;
-    border-radius: 8px;
-    transition: background 0.2s;
-  }
-  
-  #dangerousList li:hover {
-    background: #17345b;
-    cursor: pointer;
-  }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
 
-  #map {
-    flex: 1;
-    border-radius: 12px;
-    background: #0e1b2c;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  
+body {
+  background-color: #0b1623;
+  color: #fff;
+  height: 100vh;
+  overflow: hidden;
+}
 
-    height: calc(100vh - 20px);
-    width: 100%;
-    min-height: 400px;
-  }
-  
+.container {
+  display: flex;
+  height: 100vh;
+  padding: 10px;
+  gap: 10px;
+}
+
+.sidebar {
+  width: 320px;
+  background: #08111f;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar h1 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.sidebar p {
+  font-size: 14px;
+  color: #c5d0e0;
+  margin-bottom: 15px;
+}
+
+#searchInput {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  width: 100%;
+  background: #0e1b2c;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.sidebar h2 {
+  font-size: 16px;
+  color: #1e90ff;
+  margin-bottom: 8px;
+}
+
+#dangerousList {
+  list-style: none;
+  overflow-y: auto;
+  flex: 1;
+}
+
+#dangerousList li {
+  background: #0e1b2c;
+  margin-bottom: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+#dangerousList li:hover {
+  background: #17345b;
+  cursor: pointer;
+}
+
+#map {
+  flex: 1;
+  border-radius: 12px;
+  background: #0e1b2c;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+
+  height: calc(100vh - 20px);
+  width: 100%;
+  min-height: 400px;
+}
+
+.crime-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #000;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 2px 5px;
+  border-radius: 4px;
+  text-align: center;
+  pointer-events: none;
+}
+
+#crimeSelect {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 2px solid #1e90ff;
+  background: #0e1b2c;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-bottom: 15px;
+
+  background-image: linear-gradient(45deg, transparent 50%, #1e90ff 50%),
+    linear-gradient(135deg, #1e90ff 50%, transparent 50%),
+    linear-gradient(to right, #1e90ff, #1e90ff);
+  background-position: calc(100% - 20px) calc(50% - 5px),
+    calc(100% - 15px) calc(50% - 5px),
+    calc(100% - 35px) 50%;
+  background-size: 5px 5px, 5px 5px, 1px 20px;
+  background-repeat: no-repeat;
+}
+
+#crimeSelect:hover {
+  border-color: #3aa3ff;
+}
+
+#crimeSelect:focus {
+  border-color: #4cc9f0;
+  box-shadow: 0 0 8px rgba(76, 201, 240, 0.5);
+  outline: none;
+}
+
+#creditos {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.6);
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: white;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+#creditos a {
+  color: #4cc9f0;
+  text-decoration: none;
+}
+
+#creditos a:hover {
+  text-decoration: underline;
+}
+
+.api-link {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+
+.api-link a {
+  color: #4cc9f0;
+  text-decoration: none;
+}
